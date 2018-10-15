@@ -1,0 +1,155 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.mobiquityinc.packer</groupId>
+	<artifactId>packer-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<packaging>pom</packaging>
+
+	<name>packer-parent</name>
+
+	<scm>
+		<connection>scm:git:https://github.com/renfeng/package-challenge/commit/${buildNumber}</connection>
+	</scm>
+
+	<build>
+		<defaultGoal>test</defaultGoal>
+
+		<pluginManagement>
+			<plugins>
+
+				<!-- phase: validate -->
+				<plugin>
+					<artifactId>maven-help-plugin</artifactId>
+					<version>2.2</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>active-profiles</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>versions-maven-plugin</artifactId>
+					<version>2.5</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>display-dependency-updates</goal>
+								<goal>display-plugin-updates</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>buildnumber-maven-plugin</artifactId>
+					<version>1.4</version>
+					<executions>
+						<execution>
+							<phase>validate</phase>
+							<goals>
+								<goal>create</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<shortRevisionLength>7</shortRevisionLength>
+					</configuration>
+				</plugin>
+
+				<!-- phase: generate-resources -->
+
+				<!-- phase: compile -->
+
+				<!-- phase: process-classes -->
+
+				<!-- phase: process-test-classes -->
+
+				<!-- phase: test -->
+
+				<!-- phase: prepare-package -->
+
+				<!-- phase: package -->
+				<plugin>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.0.2</version>
+				</plugin>
+
+				<!-- phase: pre-integration-test -->
+
+				<!-- phase: install -->
+
+				<!-- phase: deploy -->
+
+				<!-- phase: clean -->
+
+				<!-- phase: site -->
+
+				<!-- phase: invoked manually -->
+
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+			<!--
+						<plugin>
+							<artifactId>maven-help-plugin</artifactId>
+						</plugin>
+						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>versions-maven-plugin</artifactId>
+						</plugin>
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+
+	</build>
+
+	<modules>
+		<module>cli</module>
+	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>2.6</version>
+			</dependency>
+
+			<!-- framework -->
+
+			<!-- logging -->
+
+			<!-- testing -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.12</version>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<properties>
+		<maven.buildNumber.doCheck>false</maven.buildNumber.doCheck>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
+
+</project>
