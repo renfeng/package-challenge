@@ -28,13 +28,9 @@ public class ParametersTest {
 		assertEquals(new Item(1, 15.3, 34), parameters.getItem(1));
 	}
 
-	/*
-	 * TODO negative tests
-	 */
-
 	private void assertEquals(Item expected, Item actual) {
 		Assert.assertEquals(expected.getIndex(), actual.getIndex());
-		Assert.assertEquals(expected.getWeight(), actual.getWeight(), .001);
+		Assert.assertEquals(expected.getWeight(), actual.getWeight(), Packer.WEIGHT_PRECISION);
 		Assert.assertEquals(expected.getCost(), actual.getCost());
 	}
 }

@@ -16,7 +16,11 @@ public class Item implements Comparable<Item> {
 	public static List<Item> parseList(String items) {
 		ArrayList<Item> list = new ArrayList<>();
 
+		/*
+		 * https://regex101.com/r/nV9QJb/1
+		 */
 		Pattern pattern = Pattern.compile(" [(](?<index>\\d+),(?<weight>\\d+(?:[.]\\d+)?),€(?<cost>\\d+)[)]");
+
 		Matcher matcher = pattern.matcher(items);
 		int expectedPosition = 0;
 		while (matcher.find()) {
@@ -27,8 +31,11 @@ public class Item implements Comparable<Item> {
 				list.add(item);
 				expectedPosition = matcher.end();
 			} else {
-				throw new APIException("invalid item format: " + items.substring(expectedPosition));
+				break;
 			}
+		}
+		if (expectedPosition < items.length()) {
+			throw new APIException("invalid item format: " + items.substring(expectedPosition));
 		}
 		return list;
 	}
@@ -57,5 +64,10 @@ public class Item implements Comparable<Item> {
 	@Override
 	public int compareTo(Item o) {
 		return Integer.compare(getIndex(), o.getIndex());
+	}
+
+	@Override
+	public String toString() {
+		return "(" + getIndex() + "," + getWeight() + "," + getCost() + ")";
 	}
 }

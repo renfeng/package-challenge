@@ -16,7 +16,11 @@ public class Parameters {
 	private final Map<Integer, Item> items;
 
 	public static Parameters parse(String parameters) {
+		/*
+		 * https://regex101.com/r/kXDloC/1
+		 */
 		Pattern pattern = Pattern.compile("(?<weightLimit>\\d+) :(?<items>(?: [(][^)]*[)])+)");
+
 		Matcher matcher = pattern.matcher(parameters);
 		if (matcher.matches()) {
 			int weightLimit = Integer.parseInt(matcher.group("weightLimit"));

@@ -8,13 +8,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * See PackerTest.java
+ */
 public class Packer {
 
+	public static final double WEIGHT_PRECISION = .001;
+
+	private final List<Parameters> input;
+
 	public static String pack(String testFilePath) {
-		return resolve(parseParameters(testFilePath));
+		return new Packer(testFilePath).resolve();
 	}
 
-	private static List<Parameters> parseParameters(String testFilePath) {
+	public Packer(String testFilePath) {
+		input = parseParameters(testFilePath);
+	}
+
+	private List<Parameters> parseParameters(String testFilePath) {
 		try (Stream<String> lines = Files.lines(Paths.get(testFilePath))) {
 			return lines.map(Parameters::parse).collect(Collectors.toList());
 		} catch (APIException e) {
@@ -24,7 +35,7 @@ public class Packer {
 		}
 	}
 
-	private static String resolve(List<Parameters> input) {
+	private String resolve() {
 		return input.stream()
 				.map(parameters -> new PackageChallenge(parameters).solve())
 				.collect(Collectors.joining("\n")) + "\n";
