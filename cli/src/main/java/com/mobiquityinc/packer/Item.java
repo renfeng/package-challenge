@@ -65,4 +65,9 @@ public class Item implements Comparable<Item> {
 	public int compareTo(Item o) {
 		return Integer.compare(getIndex(), o.getIndex());
 	}
+
+	@Override
+	public String toString() {
+		return "(" + getIndex() + "," + getWeight() + "," + getCost() + ")";
+	}
 }
