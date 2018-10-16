@@ -23,9 +23,6 @@ public class PackageChallenge {
 	public String solve() {
 		findAllPackagesUnderWeightLimit();
 		if (candidate == null) {
-			if (logger.isDebugEnabled()) {
-				logger.debug("n/a");
-			}
 			return "-";
 		} else {
 			return candidate.getItems().stream()
@@ -38,13 +35,13 @@ public class PackageChallenge {
 		findNextPackageUnderWeightLimit(new ArrayList<>(parameters.getItems()), new ArrayList<>());
 	}
 
-	void findNextPackageUnderWeightLimit(List<Item> remaining, List<Item> combination) {
-		if (!combination.isEmpty()) {
-			double weight = combination.stream().mapToDouble(Item::getWeight).sum();
-			if (weight >= parameters.getWeightLimit()) {
+	void findNextPackageUnderWeightLimit(List<Item> remainingItems, List<Item> itemCombination) {
+		if (!itemCombination.isEmpty()) {
+			double weight = itemCombination.stream().mapToDouble(Item::getWeight).sum();
+			if (weight > parameters.getWeightLimit()) {
 				return;
 			}
-			Package aPackage = new Package(combination);
+			Package aPackage = new Package(itemCombination);
 			if (candidate == null || candidate.getCost() < aPackage.getCost()) {
 				candidate = aPackage;
 			} else if (candidate.getCost() == aPackage.getCost()) {
@@ -61,10 +58,10 @@ public class PackageChallenge {
 			}
 
 		}
-		for (int i = 0; i < remaining.size(); i++) {
-			List<Item> nextRemaining = new ArrayList<>(remaining.subList(i + 1, remaining.size()));
-			List<Item> nextCombination = new ArrayList<>(combination);
-			nextCombination.add(remaining.get(i));
+		for (int i = 0; i < remainingItems.size(); i++) {
+			List<Item> nextRemaining = new ArrayList<>(remainingItems.subList(i + 1, remainingItems.size()));
+			List<Item> nextCombination = new ArrayList<>(itemCombination);
+			nextCombination.add(remainingItems.get(i));
 			findNextPackageUnderWeightLimit(nextRemaining, nextCombination);
 		}
 	}

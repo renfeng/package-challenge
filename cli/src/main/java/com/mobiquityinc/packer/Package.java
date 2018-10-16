@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Package implements Comparable<Package> {
+public class Package {
 
 	private double weight;
 	private int cost;
@@ -31,14 +31,5 @@ public class Package implements Comparable<Package> {
 		weight = items.stream().mapToDouble(Item::getWeight).sum();
 		cost = items.stream().mapToInt(Item::getCost).sum();
 		this.items = new TreeSet<>(items);
-	}
-
-	@Override
-	public int compareTo(Package o) {
-		int compare = -Integer.compare(cost, o.getCost());
-		if (compare == 0) {
-			compare = Double.compare(weight, o.getWeight());
-		}
-		return compare;
 	}
 }
