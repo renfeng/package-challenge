@@ -3,7 +3,7 @@ package com.mobiquityinc.packer;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Package {
 
@@ -11,25 +11,35 @@ public class Package {
 	private int cost;
 	private Set<Item> items;
 
-	public Package(Collection<Item> items) {
+	Package(Collection<Item> items) {
 		setItems(new HashSet<>(items));
 	}
 
-	public double getWeight() {
+	double getWeight() {
 		return weight;
 	}
 
-	public int getCost() {
+	int getCost() {
 		return cost;
 	}
 
-	public Set<Item> getItems() {
+	Set<Item> getItems() {
 		return items;
 	}
 
-	public void setItems(Set<Item> items) {
+	private void setItems(Set<Item> items) {
 		weight = items.stream().mapToDouble(Item::getWeight).sum();
 		cost = items.stream().mapToInt(Item::getCost).sum();
-		this.items = new TreeSet<>(items);
+		this.items = items;
+	}
+
+	@Override
+	public String toString() {
+		return getItems().size() + "," +
+				String.format("%.2f", getWeight()) + "," +
+				getCost() + " : " +
+				getItems().stream()
+						.map(Item::toString)
+						.collect(Collectors.joining(" "));
 	}
 }

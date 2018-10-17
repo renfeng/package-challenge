@@ -7,21 +7,21 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Item implements Comparable<Item> {
+public class Item {
+
+	/*
+	 * https://regex101.com/r/nV9QJb/1
+	 */
+	private static final Pattern ITEM_PATTERN = Pattern.compile(" [(](?<index>\\d+),(?<weight>\\d+(?:[.]\\d+)?),€(?<cost>\\d+)[)]");
 
 	private final int index;
 	private final double weight;
 	private final int cost;
 
-	public static List<Item> parseList(String items) {
+	static List<Item> parseList(String items) {
 		ArrayList<Item> list = new ArrayList<>();
 
-		/*
-		 * https://regex101.com/r/nV9QJb/1
-		 */
-		Pattern pattern = Pattern.compile(" [(](?<index>\\d+),(?<weight>\\d+(?:[.]\\d+)?),€(?<cost>\\d+)[)]");
-
-		Matcher matcher = pattern.matcher(items);
+		Matcher matcher = ITEM_PATTERN.matcher(items);
 		int expectedPosition = 0;
 		while (matcher.find()) {
 			if (matcher.start() == expectedPosition) {
@@ -40,7 +40,7 @@ public class Item implements Comparable<Item> {
 		return list;
 	}
 
-	public Item(int index, double weight, int cost) {
+	Item(int index, double weight, int cost) {
 		assert weight <= 100 : "Max weight of an item is ≤ 100";
 		assert cost <= 100 : "Cost of an item is ≤ 100";
 
@@ -49,21 +49,16 @@ public class Item implements Comparable<Item> {
 		this.cost = cost;
 	}
 
-	public int getIndex() {
+	int getIndex() {
 		return index;
 	}
 
-	public double getWeight() {
+	double getWeight() {
 		return weight;
 	}
 
-	public int getCost() {
+	int getCost() {
 		return cost;
-	}
-
-	@Override
-	public int compareTo(Item o) {
-		return Integer.compare(getIndex(), o.getIndex());
 	}
 
 	@Override

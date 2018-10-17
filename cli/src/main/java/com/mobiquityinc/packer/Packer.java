@@ -11,22 +11,33 @@ import java.util.stream.Stream;
 /**
  * See PackerTest.java
  */
+@SuppressWarnings("WeakerAccess")
 public class Packer {
 
-	public static final double WEIGHT_PRECISION = .001;
+	/*
+	 * threshold for decimal comparison
+	 */
+	static final double WEIGHT_PRECISION = .001;
 
 	private final List<Parameters> input;
 
+	/**
+	 * Determines which things to put into a package so that the total weight is less than or equal to the package limit
+	 * and the total cost is as large as possible.
+	 *
+	 * @param testFilePath path to a test file (can be absolute and relative)
+	 * @return the solution
+	 */
 	public static String pack(String testFilePath) {
 		return new Packer(testFilePath).resolve();
 	}
 
-	public Packer(String testFilePath) {
-		input = parseParameters(testFilePath);
+	private Packer(String testFilePath) {
+		input = parseTestFile(testFilePath);
 	}
 
-	private List<Parameters> parseParameters(String testFilePath) {
-		try (Stream<String> lines = Files.lines(Paths.get(testFilePath))) {
+	private List<Parameters> parseTestFile(String path) {
+		try (Stream<String> lines = Files.lines(Paths.get(path))) {
 			return lines.map(Parameters::parse).collect(Collectors.toList());
 		} catch (APIException e) {
 			throw e;

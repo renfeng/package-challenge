@@ -10,18 +10,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class Parameters {
+class Parameters {
+
+	/*
+	 * https://regex101.com/r/kXDloC/1
+	 */
+	private static final Pattern LINE_PATTERN = Pattern.compile("(?<weightLimit>\\d+) :(?<items>(?: [(][^)]*[)])+)");
 
 	private final int weightLimit;
 	private final Map<Integer, Item> items;
 
-	public static Parameters parse(String parameters) {
-		/*
-		 * https://regex101.com/r/kXDloC/1
-		 */
-		Pattern pattern = Pattern.compile("(?<weightLimit>\\d+) :(?<items>(?: [(][^)]*[)])+)");
-
-		Matcher matcher = pattern.matcher(parameters);
+	static Parameters parse(String parameters) {
+		Matcher matcher = LINE_PATTERN.matcher(parameters);
 		if (matcher.matches()) {
 			int weightLimit = Integer.parseInt(matcher.group("weightLimit"));
 			String items = matcher.group("items");
@@ -30,7 +30,7 @@ public class Parameters {
 		throw new APIException("invalid parameters format: " + parameters);
 	}
 
-	public Parameters(int weightLimit, List<Item> items) {
+	private Parameters(int weightLimit, List<Item> items) {
 		assert weightLimit <= 100 : "Max weight that a package can take is ≤ 100";
 		assert items.size() <= 15 : "Up to 15 items";
 
@@ -39,19 +39,19 @@ public class Parameters {
 				Function.identity()));
 	}
 
-	public int getWeightLimit() {
+	int getWeightLimit() {
 		return weightLimit;
 	}
 
-	public Item getItem(int index) {
+	Item getItem(int index) {
 		return items.get(index);
 	}
 
-	public int getNumberOfItems() {
+	int getNumberOfItems() {
 		return items.size();
 	}
 
-	public Collection<Item> getItems() {
+	Collection<Item> getItems() {
 		return items.values();
 	}
 }
