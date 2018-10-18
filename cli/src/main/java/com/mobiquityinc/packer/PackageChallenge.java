@@ -61,8 +61,6 @@ class PackageChallenge {
 	private void findNextPackageUnderWeightLimit(List<Item> remainingItems, List<Item> itemCombination) {
 
 		for (int i = 0; i < remainingItems.size(); i++) {
-			List<Item> nextRemaining = new ArrayList<>(remainingItems.subList(i + 1, remainingItems.size()));
-
 			List<Item> nextCombination = new ArrayList<>(itemCombination);
 			nextCombination.add(remainingItems.get(i));
 
@@ -76,6 +74,7 @@ class PackageChallenge {
 
 			evaluate(aPackage);
 
+			List<Item> nextRemaining = new ArrayList<>(remainingItems.subList(i + 1, remainingItems.size()));
 			findNextPackageUnderWeightLimit(nextRemaining, nextCombination);
 		}
 	}

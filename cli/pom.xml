@@ -13,6 +13,8 @@
 
 	<artifactId>packer-cli</artifactId>
 
+	<name>packer-cli</name>
+
 	<scm>
 		<connection>scm:git:https://github.com/renfeng/package-challenge/commit/${buildNumber}</connection>
 	</scm>

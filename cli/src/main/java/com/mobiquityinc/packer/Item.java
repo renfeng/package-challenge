@@ -1,6 +1,8 @@
 package com.mobiquityinc.packer;
 
 import com.mobiquityinc.exception.APIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Item {
+
+	private static final Logger logger = LoggerFactory.getLogger(Item.class);
 
 	/*
 	 * https://regex101.com/r/nV9QJb/1
@@ -23,19 +27,17 @@ public class Item {
 
 		Matcher matcher = ITEM_PATTERN.matcher(items);
 		int expectedPosition = 0;
-		while (matcher.find()) {
-			if (matcher.start() == expectedPosition) {
-				Item item = new Item(Integer.parseInt(matcher.group("index")),
-						Double.parseDouble(matcher.group("weight")),
-						Integer.parseInt(matcher.group("cost")));
-				list.add(item);
-				expectedPosition = matcher.end();
-			} else {
-				break;
-			}
+		while (matcher.find() && matcher.start() == expectedPosition) {
+			Item item = new Item(Integer.parseInt(matcher.group("index")),
+					Double.parseDouble(matcher.group("weight")),
+					Integer.parseInt(matcher.group("cost")));
+			list.add(item);
+			expectedPosition = matcher.end();
 		}
 		if (expectedPosition < items.length()) {
-			throw new APIException("invalid item format: " + items.substring(expectedPosition));
+			String message = "invalid item format: " + items.substring(expectedPosition);
+			logger.error(message);
+			throw new APIException(message);
 		}
 		return list;
 	}

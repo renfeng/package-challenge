@@ -1,6 +1,8 @@
 package com.mobiquityinc.packer;
 
 import com.mobiquityinc.exception.APIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,6 +13,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 class Parameters {
+
+	private static final Logger logger = LoggerFactory.getLogger(Parameters.class);
 
 	/*
 	 * https://regex101.com/r/kXDloC/1
@@ -27,7 +31,10 @@ class Parameters {
 			String items = matcher.group("items");
 			return new Parameters(weightLimit, Item.parseList(items));
 		}
-		throw new APIException("invalid parameters format: " + parameters);
+
+		String message = "invalid parameters format: " + parameters;
+		logger.error(message);
+		throw new APIException(message);
 	}
 
 	private Parameters(int weightLimit, List<Item> items) {

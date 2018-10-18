@@ -12,6 +12,11 @@ public class ItemTest {
 
 	@Test(expected = APIException.class)
 	public void givenInvalidItemFromMiddle_shouldThrow() {
-		Item.parseList(" (1,15.3,€34)invalid from somewhere in the middle");
+		Item.parseList(" (1,15.3,€34)invalid from somewhere in the middle (3,15.3,€34)");
+	}
+
+	@Test(expected = APIException.class)
+	public void givenInvalidItemAtTheEnd_shouldThrow() {
+		Item.parseList(" (1,15.3,€34)invalid at the end");
 	}
 }

@@ -1,6 +1,8 @@
 package com.mobiquityinc.packer;
 
 import com.mobiquityinc.exception.APIException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -11,8 +13,9 @@ import java.util.stream.Stream;
 /**
  * See PackerTest.java
  */
-@SuppressWarnings("WeakerAccess")
 public class Packer {
+
+	private static final Logger logger = LoggerFactory.getLogger(Packer.class);
 
 	/*
 	 * threshold for decimal comparison
@@ -29,6 +32,7 @@ public class Packer {
 	 * @param testFilePath path to a test file (can be absolute and relative)
 	 * @return the solution
 	 */
+	@SuppressWarnings("WeakerAccess")
 	public static String pack(String testFilePath) {
 		return new Packer(testFilePath).resolve();
 	}
@@ -43,6 +47,7 @@ public class Packer {
 		} catch (APIException e) {
 			throw e;
 		} catch (Exception e) {
+			logger.error("path = " + path, e);
 			throw new APIException(e);
 		}
 	}
