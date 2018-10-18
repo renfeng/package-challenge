@@ -17,7 +17,8 @@ public class Packer {
 	/*
 	 * threshold for decimal comparison
 	 */
-	static final double WEIGHT_PRECISION = .001;
+	static final int DIGITS_AFTER_DECIMAL_POINT = 2;
+	static final double WEIGHT_PRECISION = Math.pow(.1, DIGITS_AFTER_DECIMAL_POINT);
 
 	private final List<Parameters> input;
 

@@ -36,7 +36,7 @@ public class Package {
 	@Override
 	public String toString() {
 		return getItems().size() + "," +
-				String.format("%.2f", getWeight()) + "," +
+				String.format("%." + Packer.DIGITS_AFTER_DECIMAL_POINT + "f", getWeight()) + "," +
 				getCost() + " : " +
 				getItems().stream()
 						.map(Item::toString)

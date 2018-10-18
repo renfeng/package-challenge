@@ -61,12 +61,13 @@ class PackageChallenge {
 	private void findNextPackageUnderWeightLimit(List<Item> remainingItems, List<Item> itemCombination) {
 
 		/*
-		 * allows empty combination, which is always the first reaches here
+		 * allows empty combination, which is always the first to reach here
 		 */
 		evaluate(itemCombination);
 
 		for (int i = 0; i < remainingItems.size(); i++) {
 			List<Item> nextRemaining = new ArrayList<>(remainingItems.subList(i + 1, remainingItems.size()));
+
 			List<Item> nextCombination = new ArrayList<>(itemCombination);
 			nextCombination.add(remainingItems.get(i));
 
@@ -77,6 +78,7 @@ class PackageChallenge {
 				 */
 				break;
 			}
+
 			findNextPackageUnderWeightLimit(nextRemaining, nextCombination);
 		}
 	}
@@ -88,7 +90,7 @@ class PackageChallenge {
 		if (candidate == null || candidate.getCost() < aPackage.getCost()) {
 			candidate = aPackage;
 			ambiguousCandidate = null;
-		} else if (candidate.getCost() == aPackage.getCost() &&
+		} else if (ambiguousCandidate == null && candidate.getCost() == aPackage.getCost() &&
 				aPackage.getWeight() < candidate.getWeight() + Packer.WEIGHT_PRECISION) {
 			/*
 			 * since items are sorted by weight, it is always true that aPackage.getWeight() >= candidate.getWeight()
