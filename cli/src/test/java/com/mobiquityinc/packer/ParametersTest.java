@@ -1,5 +1,6 @@
 package com.mobiquityinc.packer;
 
+import com.mobiquityinc.exception.APIException;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -32,5 +33,10 @@ public class ParametersTest {
 		Assert.assertEquals(expected.getIndex(), actual.getIndex());
 		Assert.assertEquals(expected.getWeight(), actual.getWeight(), Packer.WEIGHT_PRECISION);
 		Assert.assertEquals(expected.getCost(), actual.getCost());
+	}
+
+	@Test(expected = APIException.class)
+	public void givenItemsWithDuplicateIndex_shouldThrow() {
+		Parameters.parse("8: (1,15.3,€34) (1,15.3,€34)");
 	}
 }

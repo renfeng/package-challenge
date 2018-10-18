@@ -32,4 +32,14 @@ public class PackageChallengeTest {
 		String solution = new PackageChallenge(parameters).solve();
 		Assert.assertEquals("1", solution);
 	}
+
+	@Test
+	public void givenFifteenItems_shouldWork() {
+		Parameters parameters = Parameters.parse("15 :" +
+				" (1,1,€1) (2,1,€1) (3,1,€1) (4,1,€1) (5,1,€1)" +
+				" (6,1,€1) (7,1,€1) (8,1,€1) (9,1,€1) (10,1,€1)" +
+				" (11,1,€1) (12,1,€1) (13,1,€1) (14,1,€1) (15,1,€1)");
+		String solution = new PackageChallenge(parameters).solve();
+		Assert.assertEquals("1,2,3,4,5,6,7,8,9,10,11,12,13,14,15", solution);
+	}
 }

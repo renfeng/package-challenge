@@ -24,28 +24,28 @@ class PackageChallenge {
 
 	String solve() {
 		findAllPackagesUnderWeightLimit();
-		if (hasSolution()) {
-			if (ambiguousCandidate != null) {
-				String message = "the behaviour is undefined when two packages have both the same cost and weight\n" +
-						ambiguousCandidate + "\n" + candidate;
-				logger.error(message);
-
-				/*
-				 * throws exception (complaining about the input) to avoid ambiguity of correct answers
-				 */
-				throw new APIException(message);
-			}
-
-			/*
-			 * it is implied by the test data that items are sorted by index
-			 */
-			return candidate.getItems().stream()
-					.sorted(Comparator.comparingInt(Item::getIndex))
-					.map(item -> item.getIndex() + "")
-					.collect(Collectors.joining(","));
-		} else {
+		if (candidate == null) {
 			return "-";
 		}
+
+		if (ambiguousCandidate != null) {
+			String message = "the behaviour is undefined when two packages have both the same cost and weight\n" +
+					ambiguousCandidate + "\n" + candidate;
+			logger.error(message);
+
+			/*
+			 * throws exception (complaining about the input) to avoid ambiguity of correct answers
+			 */
+			throw new APIException(message);
+		}
+
+		/*
+		 * it is implied by the test data that items are sorted by index
+		 */
+		return candidate.getItems().stream()
+				.sorted(Comparator.comparingInt(Item::getIndex))
+				.map(item -> item.getIndex() + "")
+				.collect(Collectors.joining(","));
 	}
 
 	private void findAllPackagesUnderWeightLimit() {
@@ -60,32 +60,27 @@ class PackageChallenge {
 
 	private void findNextPackageUnderWeightLimit(List<Item> remainingItems, List<Item> itemCombination) {
 
-		/*
-		 * allows empty combination, which is always the first to reach here
-		 */
-		evaluate(itemCombination);
-
 		for (int i = 0; i < remainingItems.size(); i++) {
 			List<Item> nextRemaining = new ArrayList<>(remainingItems.subList(i + 1, remainingItems.size()));
 
 			List<Item> nextCombination = new ArrayList<>(itemCombination);
 			nextCombination.add(remainingItems.get(i));
 
-			double weight = nextCombination.stream().mapToDouble(Item::getWeight).sum();
-			if (weight > parameters.getWeightLimit()) {
+			Package aPackage = new Package(nextCombination);
+			if (aPackage.getWeight() > parameters.getWeightLimit()) {
 				/*
 				 * since items are sorted by weight, item weight will be even higher
 				 */
 				break;
 			}
 
+			evaluate(aPackage);
+
 			findNextPackageUnderWeightLimit(nextRemaining, nextCombination);
 		}
 	}
 
-	private void evaluate(List<Item> itemCombination) {
-
-		Package aPackage = new Package(itemCombination);
+	private void evaluate(Package aPackage) {
 
 		if (candidate == null || candidate.getCost() < aPackage.getCost()) {
 			candidate = aPackage;
@@ -97,9 +92,5 @@ class PackageChallenge {
 			 */
 			ambiguousCandidate = aPackage;
 		}
-	}
-
-	private boolean hasSolution() {
-		return !candidate.getItems().isEmpty();
 	}
 }
