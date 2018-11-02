@@ -11,9 +11,9 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>packer-cli</artifactId>
+	<artifactId>packer</artifactId>
 
-	<name>packer-cli</name>
+	<name>packer</name>
 
 	<scm>
 		<connection>scm:git:https://github.com/renfeng/package-challenge/commit/${buildNumber}</connection>
@@ -29,17 +29,16 @@
 			<!-- phase: package -->
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifestEntries>
-							<Implementation-Title>${project.artifactId}</Implementation-Title>
-							<Implementation-Version>${project.version}</Implementation-Version>
-							<Implementation-Build>${buildNumber}</Implementation-Build>
-							<Implementation-Vendor-Id>renfeng.cn@gmail.com</Implementation-Vendor-Id>
-							<Built-By>Frank R.</Built-By>
-						</manifestEntries>
-					</archive>
-				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test-jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-shade-plugin</artifactId>
 			</plugin>
 
 			<!-- phase: invoked manually -->

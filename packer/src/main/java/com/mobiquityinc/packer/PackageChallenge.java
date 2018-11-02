@@ -22,7 +22,7 @@ class PackageChallenge {
 		this.parameters = parameters;
 	}
 
-	String solve() {
+	synchronized String solve() {
 		findAllPackagesUnderWeightLimit();
 		if (candidate == null) {
 			return "-";

@@ -102,6 +102,32 @@
 				<plugin>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>3.0.2</version>
+					<configuration>
+						<archive>
+							<manifestEntries>
+								<Implementation-Title>${project.artifactId}</Implementation-Title>
+								<Implementation-Version>${project.version}</Implementation-Version>
+								<Implementation-Build>${buildNumber}</Implementation-Build>
+								<Implementation-Vendor-Id>renfeng.cn@gmail.com</Implementation-Vendor-Id>
+								<Built-By>Frank R.</Built-By>
+							</manifestEntries>
+						</archive>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-shade-plugin</artifactId>
+					<version>3.1.0</version>
+					<executions>
+						<execution>
+							<phase>package</phase>
+							<goals>
+								<goal>shade</goal>
+							</goals>
+							<configuration>
+								<shadedArtifactAttached>true</shadedArtifactAttached>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 
 				<!-- phase: pre-integration-test -->
@@ -158,11 +184,18 @@
 	</build>
 
 	<modules>
-		<module>cli</module>
+		<module>packer</module>
+		<module>packer-microbenchmark</module>
 	</modules>
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>com.mobiquityinc.packer</groupId>
+				<artifactId>packer</artifactId>
+				<version>0.0.1-SNAPSHOT</version>
+			</dependency>
+
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
@@ -190,6 +223,7 @@
 				<version>4.12</version>
 				<scope>test</scope>
 			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
